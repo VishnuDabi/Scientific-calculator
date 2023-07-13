@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    </script>
+    <style>
+        table {
+            border: 1px solid black;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        input[type="button"] {
+            width: 100%;
+            padding: 20px 40px;
+            background-color: red;
+            background-image: linear-gradient(to bottom right, rgb(217, 138, 138), rgb(79, 193, 201));
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+        }
+
+        input[type="text"] {
+            /* padding: 20px 240px; */
+            font-size: 24px;
+            height: 40px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            border: 2px solid black;
+            text-align: left;
+            width: 750px;
+            /* size: 500px; */
+
+
+        }
+
+        display {
+            text-align: left;
+        }
+
+        .button-div {
+            position: relative;
+        }
+
+        .clearBtn {
+            position: absolute;
+            padding: 5px 10px;
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            border: 2px solid black;
+            text-align: left;
+        }
+    </style>
+    <script>
+
+        function backspace() {
+            let display = document.getElementById("display");
+            display.value = display.value.slice(0, -1);
+        }
+
+        function calculate() {
+            let display = document.getElementById("display");
+            let expression = display.value;
+            let result;
+
+            try {
+                // Convert trigonometric function inputs from degrees to radians
+                expression = expression.replace(/(\d+)([a-z]+)(\()/gi, "$1*$2$3");
+
+                console.log(expression);
+
+                expression = expression.replace(/sin\(/g, 'Math.sin(');
+                console.log(expression);
+                expression = expression.replace(/cos\(/g, 'Math.cos(');
+                expression = expression.replace(/tan\(/g, 'Math.tan(');
+                console.log(expression);
+                expression = expression.replaceAll('sin-1(', 'Math.asin(');
+                expression = expression.replaceAll('cos-1(', 'Math.acos(');
+                expression = expression.replaceAll('tan-1(', 'Math.atan(');
+                console.log(expression);
+
+                expression = expression.replace(/sqrt\(/g, 'Math.sqrt(');
+                expression=expression.replaceAll('log10','Math.LN10');
+                expression = expression.replace(/log10\(/g, 'Math.LN10');
+                expression=expression.replaceAll('%','*100');
+                console.log(expression);
+                expression = expression.replace(/log\(/g, 'Math.log(');
+                // expression = 'Math.sin(30)+5^3';
+                
+                // expression = expression.replace(/(\d+)\^(\d+)/g, 'Math.pow($1, $2)');
+                expression = expression.replace(/(\d+(?:\.\d+)?)\^(\d+(?:\.\d+)?)/g, 'Math.pow($1, $2)');
+                expression = expression.replace(/(\d+)\((\d+)/g, '$1*($2');
+                expression=expression.replaceAll(')(',"*")
+                expression= expression.replace(/(Math\.[a-z]+\([\d.]+\))(Math\.[a-z]+\([\d.]+\))/gi, "$1 * $2");
+                expression =expression.replace(/(\d+)([a-z]+)/gi, "$1*$2");
+                expression = expression.replaceAll('exp(', 'Math.exp(')
+                expression = expression.replace(/pi/g, "Math.PI");
+                expression = expression.replace('E(', 'Math.E*(')
+                expression=expression.replaceAll("()",'1');
+                console.log('last exp:', expression);
+                result = eval(expression);
+                display.value = result;
+            } catch (error) {
+                display.value = "Error";
+            }
+        }
+        function fact(){
+            let x=document.getElementById('display').value;
+            var fact=1;
+            for(let i=x;i>=1;i--)
+            {
+                // alert('for');
+                fact=fact*i;
+            }
+            if(x!=='')
+            {
+                document.getElementById('display').value=fact;
+            }
+            else{
+                alert('invalid input');
+            }
+            
+        }
+    </script>
+</head>
+
+<body>
+    <h1 style="color: green; text-align: center;">
+        Scientific Calculator</h1>
+    <form>
+        <!-- <button onclick="solve()">solve</button> -->
+
+        <table>
+            <tr>
+                <td colspan="7">
+                    <div class="button-div">
+                        <input type='text' id="display">
+                        <!-- <input type="text"> -->
+                        <button class="clearBtn" onclick="display.value=''">clear</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <!-- <td>
+                    <input type="button" onclick="display.value+=''" id="" value="Rad">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+=''" id="" value="Deg">
+                </td> -->
+                <td>
+                    <input type="button" onclick="display.value+='sin-1('" value="sin^-1">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='cos-1('" value="cos^-1">
+                </td>
+
+                <td>
+                    <!-- <input type="button" onclick="display.value+='!'" id="" value="x!"> -->
+                    <input type="button" onclick="fact()" id="" value="x!">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='('" id="" value="(">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+=')'" id="" value=")">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='%'" id="" value="%">
+                </td>
+                <td>
+                    <input type="button" value="CE" onclick="backspace()">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="button" onclick="display.value+='tan-1('" value="tan^-1">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='sin('" value="sin">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='log('" value="log">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='7'" value="7">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='8'" value="8">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='9'" value="9">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='/'" value="/">
+                </td>
+            </tr>
+            <tr>
+            <tr>
+                <td>
+                    <input type="button" onclick="display.value+='pi'" value="PI">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='cos('" value="cos">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='log10'" value="log10">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='4'" value="4">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='5'" value="5">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='6'" value="6">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='*'" value="x">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="button" onclick="display.value+='E('" value="E">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='tan('" value="tan">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value += 'sqrt('" value="&#8730">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='1'" value="1">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='2'" value="2">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='3'" value="3">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='-'" value="-">
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    <input type="button" onclick="display.value=''" value="clear">
+                </td>
+
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='exp('" value="Exp">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='^'" value="^">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='0'" value="0">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='.'" value=".">
+                </td>
+                <td>
+                    <input type="button" onclick="calculate()" value="=">
+                </td>
+                <td>
+                    <input type="button" onclick="display.value+='+'" value="+">
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+
+</html>
